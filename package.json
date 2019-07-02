@@ -1,0 +1,31 @@
+{
+  "name": "bitmap-assignment",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "tsc && node ./dist",
+    "test": "jest",
+    "lint": "tslint"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mmanyshev/bitmap-assignment.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mmanyshev/bitmap-assignment/issues"
+  },
+  "homepage": "https://github.com/mmanyshev/bitmap-assignment#readme",
+  "devDependencies": {
+    "@types/jest": "24.0.15",
+    "@types/node": "12.0.10",
+    "jest": "24.8.0",
+    "mock-stdin": "0.3.1",
+    "ts-jest": "24.0.2",
+    "tslint": "5.18.0",
+    "tslint-config-airbnb": "5.11.1",
+    "typescript": "3.5.2"
+  }
+}
