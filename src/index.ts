@@ -1,2 +1,3 @@
+import { solve } from "./taskSolver";
 
-console.log("Hello there");
+solve();

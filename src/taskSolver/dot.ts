@@ -17,7 +17,7 @@ export class Dot {
     return Math.abs(this.x - dot.x) + Math.abs(this.y - dot.y);
   }
 
-  public trySetDistanceToMin(dot: Dot): void {
+  public tryApplyDistanceTo(dot: Dot): void {
 
     if (this.distance === 0) {
       return;

@@ -3,10 +3,10 @@ import { Dot } from "./dot";
 import { Bitmap } from "types/bitmap";
 
 interface DotCache {
-  byColumn: { [index: number]: Dot[] };
+  byRow: { [index: number]: Dot[] };
 }
 
-interface Task {
+export interface Task {
 
   distanceField: Dot[][];
   zeroDistanceDotCache: DotCache;
@@ -16,7 +16,7 @@ interface Task {
 export function prepareTask(bitmap: Bitmap): Task {
 
   const zeroDistanceDotCache: DotCache = {
-    byColumn: {},
+    byRow: {},
   };
 
   const distanceField = bitmap.map((row: number[], y: number) => {
@@ -27,10 +27,10 @@ export function prepareTask(bitmap: Bitmap): Task {
       if (pixel === 1) {
 
         dot.distance = 0;
-        const { byColumn } = zeroDistanceDotCache;
+        const { byRow } = zeroDistanceDotCache;
 
-        byColumn[x] = byColumn[x] || [];
-        byColumn[x].push(dot);
+        byRow[y] = byRow[y] || [];
+        byRow[y].push(dot);
 
       }
 

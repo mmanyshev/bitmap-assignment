@@ -59,12 +59,13 @@ test("it caches zero distance dots", () => {
 
   const { zeroDistanceDotCache } = prepareTask(bitmap);
 
-  expect(Object.keys(zeroDistanceDotCache.byColumn).length).toBe(3);
-  expect(zeroDistanceDotCache.byColumn[0].length).toBe(1);
-  expect(zeroDistanceDotCache.byColumn[1].length).toBe(2);
-  expect(zeroDistanceDotCache.byColumn[2].length).toBe(3);
+  expect(Object.keys(zeroDistanceDotCache.byRow).length).toBe(4);
+  expect(zeroDistanceDotCache.byRow[0].length).toBe(1);
+  expect(zeroDistanceDotCache.byRow[1].length).toBe(2);
+  expect(zeroDistanceDotCache.byRow[2].length).toBe(2);
+  expect(zeroDistanceDotCache.byRow[3].length).toBe(1);
 
-  Object.entries(zeroDistanceDotCache.byColumn)
+  Object.entries(zeroDistanceDotCache.byRow)
     .forEach(([key, value]) => {
 
       const isZeroDistanceDotsOnly =

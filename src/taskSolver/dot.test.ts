@@ -30,12 +30,12 @@ test("it pick minimum distance over distance to specified dot", () => {
 
   dot1.distance = 0;
   dot2.distance = 2; // local min
-  dot1.trySetDistanceToMin(dot2);
+  dot1.tryApplyDistanceTo(dot2);
 
   expect(dot1.distance).toBe(0);
 
   dot1.distance = 10;
-  dot1.trySetDistanceToMin(dot2);
+  dot1.tryApplyDistanceTo(dot2);
 
   expect(dot1.distance).toBe(9);
 
