@@ -2,35 +2,30 @@
 import { Dot } from "./dot";
 import { Task } from "./prepareTask";
 
-const makeNextReferenceDotGetter = (
+export const makeReferenceDotsGetter = (
   referenceDotList: Dot[],
-  rtlDirection = false,
 ) => {
 
-  let index = rtlDirection ?
-    referenceDotList.length - 1 : 0;
+  const interator =
+    referenceDotList[Symbol.iterator]();
 
-  const step = rtlDirection ? -1 : 1;
+  let leftDot: Dot;
+  let rightDot = interator.next().value;
 
   return (x: number) => {
 
-    const dot = referenceDotList[index];
-    console.log(dot, x, rtlDirection);
-
-    if (!dot) {
-      return null;
+    if (!rightDot) {
+      return { leftDot, rightDot };
     }
 
-    if (!rtlDirection && dot.x > x) {
-      return dot;
+    if (rightDot.x >= x) {
+      return { leftDot, rightDot };
     }
 
-    if (rtlDirection && dot.x < x) {
-      return dot;
-    }
+    leftDot = rightDot;
+    rightDot = interator.next().value;
 
-    index += step;
-    return referenceDotList[index] || null;
+    return { leftDot, rightDot };
 
   };
 
@@ -50,16 +45,11 @@ export function fillRowsWithReferenceDots(task: Task): void {
     }
 
     const referenceDotList = zeroDistanceDotCache.byRow[y];
-    const getNextLeftReferenceDot = makeNextReferenceDotGetter(referenceDotList, true);
-    const getNextRightReferenceDot = makeNextReferenceDotGetter(referenceDotList);
+    const getReferenceDots = makeReferenceDotsGetter(referenceDotList);
 
     row.forEach((dot, x) => {
 
-      const leftDot = getNextLeftReferenceDot(x);
-      const rightDot = getNextRightReferenceDot(x);
-
-      console.log(leftDot);
-      console.log(rightDot);
+      const { leftDot, rightDot } = getReferenceDots(x);
 
       if (leftDot) {
         dot.tryApplyDistanceTo(leftDot);

@@ -34,4 +34,8 @@ export class Dot {
 
   }
 
+  public toString(): string {
+    return this.distance.toString();
+  }
+
 }
