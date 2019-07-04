@@ -1,23 +1,15 @@
 
-export class Dot {
+import { Dot } from "app/dot";
 
-  public readonly x: number;
-  public readonly y: number;
+export class DistanceDot extends Dot {
 
   public distance: number = Infinity;
 
   constructor(x: number, y: number) {
-
-    this.x = x;
-    this.y = y;
-
+    super(x, y);
   }
 
-  public getDistanceTo(dot: Dot): number {
-    return Math.abs(this.x - dot.x) + Math.abs(this.y - dot.y);
-  }
-
-  public suggestDistanceTo(dot: Dot): void {
+  public suggestMinDistanceWith(dot: DistanceDot): void {
 
     if (this.distance === 0) {
       return;

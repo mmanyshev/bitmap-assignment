@@ -5,9 +5,10 @@
   "main": "index.js",
   "private": true,
   "scripts": {
-    "start": "tsc && node ./dist",
+    "start": "tsc && node -r module-alias/register ./dist/app",
     "test": "jest",
-    "lint": "tslint"
+    "lint": "tslint -c ./tslint.json --fix './src/**/*.ts'",
+    "clean": "rimraf ./dist"
   },
   "repository": {
     "type": "git",
@@ -24,9 +25,15 @@
     "@types/node": "12.0.10",
     "jest": "24.8.0",
     "mock-stdin": "0.3.1",
+    "module-alias": "2.2.0",
+    "rimraf": "2.6.3",
     "ts-jest": "24.0.2",
+    "tsconfig-paths": "3.8.0",
     "tslint": "5.18.0",
     "tslint-config-airbnb": "5.11.1",
     "typescript": "3.5.2"
+  },
+  "_moduleAliases": {
+    "app": "dist/app/"
   }
 }
