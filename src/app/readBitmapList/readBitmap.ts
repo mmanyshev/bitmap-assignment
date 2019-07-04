@@ -10,7 +10,7 @@ const MAX_BITMAP_SIDE_LENGTH = 182;
 
 export async function readBitmap(rl: readline.Interface): Promise<Bitmap> {
 
-  const bitmap: Bitmap = [];
+  const data: number[][] = [];
   let isDataHasWhiteDots = false;
 
   const [height, width] = await readNumberLine(rl);
@@ -40,7 +40,7 @@ export async function readBitmap(rl: readline.Interface): Promise<Bitmap> {
 
     });
 
-    bitmap.push(line);
+    data.push(line);
 
   }
 
@@ -48,6 +48,6 @@ export async function readBitmap(rl: readline.Interface): Promise<Bitmap> {
     throw new TypeError("Bitmap should contain at least one white dot");
   }
 
-  return bitmap;
+  return { width, height, data };
 
 }

@@ -5,11 +5,18 @@ import { DistanceField } from "app/distanceField";
 
 // const bitmapList = readBitmapList();
 
-const testBitmap: Bitmap = [
-  [0, 0, 0, 1],
-  [0, 0, 1, 1],
-  [0, 1, 1, 0],
-];
+const testBitmap: Bitmap = {
+
+  width: 4,
+  height: 3,
+
+  data: [
+    [0, 0, 0, 1],
+    [0, 0, 1, 1],
+    [0, 1, 1, 0],
+  ],
+
+};
 
 // const testBitmap: Bitmap = [
 //   [0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1],

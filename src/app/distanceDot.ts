@@ -30,7 +30,7 @@ export class DistanceDot extends Dot {
 
     return this.distance
       .toString()
-      .padStart(3, " ");
+      .padStart(5, " ");
 
   }
 

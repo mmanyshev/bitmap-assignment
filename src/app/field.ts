@@ -1,16 +1,26 @@
 
 import { Dot } from "app/dot";
+import { Bitmap } from "app/bitmap";
 
 export abstract class Field<T extends Dot> {
 
-  public rows: T[][] = [];
+  public readonly width: number;
+  public readonly height: number;
+  public abstract readonly rows: T[][] = [];
 
   abstract fill(): void;
+
+  constructor(bitmap: Bitmap) {
+
+    this.width = bitmap.width;
+    this.height = bitmap.height;
+
+  }
 
   toString() {
 
     return this.rows.reduce(
-      (acc: string, row) => `${acc}${row.join(" ")}\n`,
+      (acc, row) => `${acc}${row.join(" ")}\n`,
       "",
     );
 

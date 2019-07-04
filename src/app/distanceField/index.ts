@@ -8,11 +8,13 @@ import { fillAxis, DotSelectorFn } from "./fillAxis";
 
 export class DistanceField extends Field<DistanceDot> {
 
+  public rows: DistanceDot[][];
+
   constructor(bitmap: Bitmap) {
 
-    super();
+    super(bitmap);
 
-    this.rows = bitmap.map((row: number[], y: number) => {
+    this.rows = bitmap.data.map((row: number[], y: number) => {
       return row.map((value: number, x: number) => {
 
         const dot = new DistanceDot(x, y);
@@ -33,8 +35,8 @@ export class DistanceField extends Field<DistanceDot> {
     const getDotAtForYAxis: DotSelectorFn =
       (mainAxisPos, crossAxisPos) => this.rows[mainAxisPos][crossAxisPos];
 
-    fillAxis(getDotAtForXAxis, this.rows[0].length, this.rows.length);
-    fillAxis(getDotAtForYAxis, this.rows.length, this.rows[0].length);
+    fillAxis(getDotAtForXAxis, this.width, this.height);
+    fillAxis(getDotAtForYAxis, this.height, this.width);
 
   }
 

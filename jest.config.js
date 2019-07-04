@@ -6,4 +6,7 @@ module.exports = {
 
   modulePaths: [ "<rootDir>/src" ],
 
+  collectCoverage: true,
+  coverageDirectory: "<rootDir>/coverage",
+
 };

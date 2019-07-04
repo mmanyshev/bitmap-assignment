@@ -4,30 +4,44 @@ import { DistanceDot } from "app/distanceDot";
 
 import { DistanceField } from ".";
 
-test("return distanceField of correct shape", () => {
+test("DistanceField should reflect width & height", () => {
 
-  const bitmap: Bitmap = [
-    [1, 0, 0],
-    [0, 1, 1],
-    [0, 1, 1],
-    [0, 0, 1],
-  ];
+  const bitmap: Bitmap = {
+
+    width: 3,
+    height: 4,
+
+    data: [
+      [1, 0, 0],
+      [0, 1, 1],
+      [0, 1, 1],
+      [0, 0, 1],
+    ],
+
+  };
 
   const distanceField = new DistanceField(bitmap);
 
-  expect(distanceField.rows.length).toBe(4);
-  expect(distanceField.rows[0].length).toBe(3);
+  expect(distanceField.width).toBe(3);
+  expect(distanceField.height).toBe(4);
 
 });
 
 test("it convert bitmap pixels into distanceField dots", () => {
 
-  const bitmap: Bitmap = [
-    [1, 0, 0],
-    [0, 1, 1],
-    [0, 1, 1],
-    [0, 0, 1],
-  ];
+  const bitmap: Bitmap = {
+
+    width: 3,
+    height: 4,
+
+    data: [
+      [1, 0, 0],
+      [0, 1, 1],
+      [0, 1, 1],
+      [0, 0, 1],
+    ],
+
+  };
 
   const expectedDistanceField = [
     [new DistanceDot(0, 0), new DistanceDot(1, 0), new DistanceDot(2, 0)],

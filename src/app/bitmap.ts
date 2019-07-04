@@ -1,2 +1,9 @@
 
-export type Bitmap = number[][];
+export type Bitmap = {
+
+  width: number;
+  height: number;
+
+  data: number[][];
+
+};

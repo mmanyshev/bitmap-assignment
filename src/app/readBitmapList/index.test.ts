@@ -27,13 +27,9 @@ test("reads single task", async () => {
 
   const [bitmap] = await readBitmapList();
 
-  expect(bitmap.length).toBe(1);
-
-  bitmap.forEach((row) => {
-    expect(row.length).toBe(2);
-  });
-
-  expect(bitmap).toStrictEqual([[0, 1]]);
+  expect(bitmap.width).toBe(2);
+  expect(bitmap.height).toBe(1);
+  expect(bitmap.data).toStrictEqual([[0, 1]]);
 
 });
 
@@ -63,25 +59,16 @@ test("reads multiple task", async () => {
     bitmap3,
   ] = await readBitmapList();
 
-  expect(bitmap1.length).toBe(1);
-  bitmap1.forEach((row) => {
-    expect(row.length).toBe(2);
-  });
+  expect(bitmap1.width).toBe(2);
+  expect(bitmap1.height).toBe(1);
+  expect(bitmap1.data).toStrictEqual([[0, 1]]);
 
-  expect(bitmap1).toStrictEqual([[0, 1]]);
+  expect(bitmap2.width).toBe(2);
+  expect(bitmap2.height).toBe(2);
+  expect(bitmap2.data).toStrictEqual([[0, 0], [0, 1]]);
 
-  expect(bitmap2.length).toBe(2);
-  bitmap2.forEach((row) => {
-    expect(row.length).toBe(2);
-  });
-
-  expect(bitmap2).toStrictEqual([[0, 0], [0, 1]]);
-
-  expect(bitmap3.length).toBe(3);
-  bitmap3.forEach((row) => {
-    expect(row.length).toBe(3);
-  });
-
-  expect(bitmap3).toStrictEqual([[1, 0, 0], [0, 1, 0], [0, 0, 0]]);
+  expect(bitmap3.width).toBe(3);
+  expect(bitmap3.height).toBe(3);
+  expect(bitmap3.data).toStrictEqual([[1, 0, 0], [0, 1, 0], [0, 0, 0]]);
 
 });
