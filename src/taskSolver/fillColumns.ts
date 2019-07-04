@@ -10,14 +10,14 @@ export function fillColumns(task: Task) {
     distanceField[i].forEach((dot, x) => {
 
       const upperDot = distanceField[i - 1][x];
-      dot.tryApplyDistanceTo(upperDot);
+      dot.suggestDistanceTo(upperDot);
 
     });
 
     distanceField[len - i - 1].forEach((dot, x) => {
 
       const upperDot = distanceField[len - i][x];
-      dot.tryApplyDistanceTo(upperDot);
+      dot.suggestDistanceTo(upperDot);
 
     });
 

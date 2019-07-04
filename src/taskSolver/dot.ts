@@ -17,7 +17,7 @@ export class Dot {
     return Math.abs(this.x - dot.x) + Math.abs(this.y - dot.y);
   }
 
-  public tryApplyDistanceTo(dot: Dot): void {
+  public suggestDistanceTo(dot: Dot): void {
 
     if (this.distance === 0) {
       return;
@@ -35,7 +35,11 @@ export class Dot {
   }
 
   public toString(): string {
-    return this.distance.toString();
+
+    return this.distance
+      .toString()
+      .padStart(3, " ");
+
   }
 
 }

@@ -52,11 +52,11 @@ export function fillRowsWithReferenceDots(task: Task): void {
       const { leftDot, rightDot } = getReferenceDots(x);
 
       if (leftDot) {
-        dot.tryApplyDistanceTo(leftDot);
+        dot.suggestDistanceTo(leftDot);
       }
 
       if (rightDot) {
-        dot.tryApplyDistanceTo(rightDot);
+        dot.suggestDistanceTo(rightDot);
       }
 
     });
