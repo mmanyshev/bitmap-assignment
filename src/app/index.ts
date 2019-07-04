@@ -1,29 +1,36 @@
 
-import { Bitmap } from "app/bitmap";
 import { DistanceField } from "app/distanceField";
-// import { readBitmapList } from "app/readBitmapList";
+import { readBitmapList } from "app/readBitmapList";
 
-// const bitmapList = readBitmapList();
+readBitmapList()
+  .then(
+    (bitmapList) => {
 
-const testBitmap: Bitmap = {
+      bitmapList.forEach((bitmap) => {
 
-  width: 4,
-  height: 3,
+        const distanceField = new DistanceField(bitmap);
+        distanceField.fill();
 
-  data: [
-    [0, 0, 0, 1],
-    [0, 0, 1, 1],
-    [0, 1, 1, 0],
-  ],
+        const output = distanceField.toString();
+        process.stdout.write(output);
 
-};
+        if (process.env.NODE_ENV !== "production") {
+          process.stdout.write(distanceField.getFormmattedStats());
+        }
 
-const distanceField = new DistanceField(testBitmap);
-distanceField.fill();
+      });
 
-const output = distanceField.toString();
-process.stdout.write(output);
+    },
+    (error) => {
 
-if (process.env.NODE_ENV !== "production") {
-  process.stdout.write(distanceField.getFormmattedStats());
-}
+      console.error("Not able to process input:", error.message);
+      process.exit();
+
+    },
+  )
+  .catch((error) => {
+
+    console.error("Error while processing test cases:", error.message);
+    process.exit();
+
+  });

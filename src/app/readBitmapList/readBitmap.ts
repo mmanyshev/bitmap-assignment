@@ -16,7 +16,7 @@ export async function readBitmap(rl: readline.Interface): Promise<Bitmap> {
   const [height, width] = await readNumberLine(rl);
 
   if (!height || !width) {
-    throw new TypeError("Height and width expected to be set");
+    throw new TypeError("Height/Width expected to be set");
   }
 
   validateRange(width, 1, MAX_BITMAP_SIDE_LENGTH, "Bitmap width");
