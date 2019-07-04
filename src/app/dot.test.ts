@@ -31,4 +31,4 @@ test("it reflect coordinate when converted to string", () => {
   expect(dot1.toString()).toBe("{3,4}");
   expect(dot2.toString()).toBe("{0,0}");
 
-})
+});
