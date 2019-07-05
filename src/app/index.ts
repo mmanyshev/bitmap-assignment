@@ -1,8 +1,11 @@
 
+import { promisify } from "util";
+
 import workerFarm from "worker-farm";
 
 import { Bitmap } from "app/bitmap";
 import { readBitmapList } from "app/readBitmapList";
+import { ProcessBitmapWorkerResult } from "./worker";
 
 function initBitmapListProcessing(bitmapList: Bitmap[]) {
 
@@ -11,26 +14,41 @@ function initBitmapListProcessing(bitmapList: Bitmap[]) {
     ["processBitmap"],
   );
 
-  bitmapList.forEach((bitmap) => {
-    workers.processBitmap(bitmap, (error: Error | null, result: any) => {
+  const processBitmap =
+    promisify(<any>workers.processBitmap);
 
-      if (error) {
+  const workerPromises = bitmapList.map((bitmap, index) => {
+
+    return processBitmap(bitmap)
+      .catch((error: Error) => {
 
         console.error("Error in worker:", error.message);
-        return;
+        return null;
 
-      }
+      });
 
-      process.stdout.write(result.field);
-
-      if (process.env.NODE_ENV !== "production") {
-        process.stdout.write(result.summary);
-      }
-
-    });
   });
 
   workerFarm.end(workers);
+
+  return Promise.all(workerPromises)
+    .then((resultList: ProcessBitmapWorkerResult[]) => {
+
+      resultList.forEach((result) => {
+
+        if (!result) {
+          return;
+        }
+
+        process.stdout.write(result.field);
+
+        if (process.env.NODE_ENV !== "production") {
+          process.stdout.write(result.stats);
+        }
+
+      });
+
+    });
 
 }
 

@@ -2,21 +2,30 @@
 import { Bitmap } from "./bitmap";
 import { DistanceField } from "./distanceField";
 
+export type ProcessBitmapWorkerResult = {
+
+  field: string;
+  stats: string;
+
+};
+
 export function processBitmap(
   bitmap: Bitmap,
-  callback: (err: Error | null, data: any) => void,
+  callback: NodeLikeCallback<any>,
 ) {
 
-  const distanceField = new DistanceField(bitmap);
+  const distanceField =
+    new DistanceField(bitmap);
+
   distanceField.fill();
 
-  callback(null, {
-
-    pid: process.pid,
+  const result: ProcessBitmapWorkerResult = {
 
     field: distanceField.toString(),
-    summary: distanceField.getFormmattedStats(),
+    stats: distanceField.getFormmattedStats(),
 
-  });
+  };
+
+  callback(null, result);
 
 }
