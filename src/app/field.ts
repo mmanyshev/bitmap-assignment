@@ -19,10 +19,12 @@ export abstract class Field<T extends Dot> {
 
   toString() {
 
-    return this.rows.reduce(
-      (acc, row) => `\n${acc}${row.join(" ")}\n`,
+    const table = this.rows.reduce(
+      (acc, row) => `${acc}${row.join(" ")}\n`,
       "",
     );
+
+    return `\n${table}`;
 
   }
 

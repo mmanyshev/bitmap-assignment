@@ -7,9 +7,14 @@ import { Bitmap } from "app/bitmap";
 import { readBitmapList } from "app/readBitmapList";
 import { ProcessBitmapWorkerResult } from "./worker";
 
+const WORKER_OPTIONS = {
+  maxRetries: 0,
+};
+
 export function initBitmapListProcessing(bitmapList: Bitmap[]) {
 
   const workers = workerFarm(
+    WORKER_OPTIONS,
     require.resolve("./worker"),
     ["processBitmap"],
   );

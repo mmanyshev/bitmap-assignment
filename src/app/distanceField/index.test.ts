@@ -62,3 +62,27 @@ test("it convert bitmap pixels into distanceField dots", () => {
   expect(distanceField.rows).toStrictEqual(expectedDistanceField);
 
 });
+
+test("it correclty converts to string", () => {
+
+  const bitmap: Bitmap = {
+
+    width: 4,
+    height: 3,
+
+    data: [
+      [0, 0, 0, 1],
+      [0, 0, 1, 1],
+      [0, 1, 1, 0],
+    ],
+
+  };
+
+  const expectedResult = "\n3 2 1 0\n2 1 0 0\n1 0 0 1\n";
+
+  const distanceField = new DistanceField(bitmap);
+  distanceField.fill();
+
+  expect(distanceField.toString()).toBe(expectedResult);
+
+});
