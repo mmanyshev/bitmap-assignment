@@ -27,11 +27,7 @@ export class DistanceDot extends Dot {
   }
 
   public toString(): string {
-
-    return this.distance
-      .toString()
-      .padStart(5, " ");
-
+    return this.distance.toString();
   }
 
 }

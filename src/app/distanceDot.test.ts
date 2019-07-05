@@ -32,7 +32,7 @@ test("it reflect distance when converted to string", () => {
   dot1.distance = 0;
   dot2.distance = 600;
 
-  expect(dot1.toString()).toStrictEqual("    0");
-  expect(dot2.toString()).toStrictEqual("  600");
+  expect(dot1.toString()).toStrictEqual("0");
+  expect(dot2.toString()).toStrictEqual("600");
 
 });
