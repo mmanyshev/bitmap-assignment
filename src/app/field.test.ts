@@ -35,6 +35,6 @@ test("Field derived classes inherit toString()", () => {
   };
 
   const customField = new CustomField(bitmap);
-  expect(customField.toString()).toBe("{0,0} {1,0}\n");
+  expect(customField.toString()).toBe("\n{0,0} {1,0}\n");
 
 });
