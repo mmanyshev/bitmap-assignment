@@ -3,9 +3,12 @@ import { once } from "events";
 import readline from "readline";
 
 import { Bitmap } from "app/bitmap";
+import { validateRange } from "app/utils/validateRange";
 
 import { readBitmap } from "./readBitmap";
 import { readNumberLine } from "./readNumberLine";
+
+const MAX_TEST_CASES_AMOUNT = 1000;
 
 export async function readBitmapList(): Promise<Bitmap[]> {
 
@@ -19,22 +22,20 @@ export async function readBitmapList(): Promise<Bitmap[]> {
   });
 
   const bitmapList: Bitmap[] = [];
-  let [testCaseAmount = 0] = await readNumberLine(rl);
 
-  if (testCaseAmount <= 0) {
-    throw new RangeError("Test cases amount expected to pe positive integer");
-  }
+  let [testCasesAmount = 0] = await readNumberLine(rl);
+  validateRange(testCasesAmount, 1, MAX_TEST_CASES_AMOUNT, "Test cases amount");
 
   do {
 
     const bitmap = await readBitmap(rl);
     bitmapList.push(bitmap);
 
-    if (testCaseAmount !== 1) {
+    if (testCasesAmount !== 1) {
       await once(rl, "line"); // empty line between bitmaps
     }
 
-  } while (testCaseAmount -= 1);
+  } while (testCasesAmount -= 1);
 
   rl.close();
   return bitmapList;
