@@ -4,8 +4,6 @@ import readline from "readline";
 
 export async function readNumberLine(rl: readline.Interface): Promise<number[]> {
 
-  rl.prompt();
-
   const line = await once(rl, "line");
   const preparedLine = line.toString().replace(/\s+/g, " ").trim();
 

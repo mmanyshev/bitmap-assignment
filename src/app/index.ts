@@ -7,7 +7,7 @@ import { Bitmap } from "app/bitmap";
 import { readBitmapList } from "app/readBitmapList";
 import { ProcessBitmapWorkerResult } from "./worker";
 
-function initBitmapListProcessing(bitmapList: Bitmap[]) {
+export function initBitmapListProcessing(bitmapList: Bitmap[]) {
 
   const workers = workerFarm(
     require.resolve("./worker"),
@@ -52,19 +52,27 @@ function initBitmapListProcessing(bitmapList: Bitmap[]) {
 
 }
 
-readBitmapList()
-  .then(
-    initBitmapListProcessing,
-    (error) => {
+export function run() {
 
-      console.error("Not able to process input:", error.message);
+  return readBitmapList()
+    .then(
+      initBitmapListProcessing,
+      (error) => {
+
+        console.error("Not able to process input:", error.message);
+        process.exit();
+
+      },
+    )
+    .catch((error) => {
+
+      console.error("Error while processing test cases:", error.message);
       process.exit();
 
-    },
-  )
-  .catch((error) => {
+    });
 
-    console.error("Error while processing test cases:", error.message);
-    process.exit();
+}
 
-  });
+if (require.main === module) {
+  run();
+}

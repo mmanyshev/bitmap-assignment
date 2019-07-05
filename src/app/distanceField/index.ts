@@ -54,8 +54,8 @@ export class DistanceField extends Field<DistanceDot> {
 
   public getFormmattedStats() {
 
-    return `\n\nSize: ${this.width}x${this.height} \
-      Constructor time: ${this.constructorTime}ms; Fill time: ${this.fillTime}ms;\n\n`;
+    return `\nSize: ${this.width}x${this.height} \
+      Constructor time: ${this.constructorTime}ms; Fill time: ${this.fillTime}ms;\n`;
 
   }
 
