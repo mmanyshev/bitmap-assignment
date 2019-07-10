@@ -25,7 +25,8 @@ test("reads single task", async () => {
     ],
   );
 
-  const [bitmap] = await readBitmapList();
+  const iterator = readBitmapList();
+  const { value: bitmap } = await iterator.next();
 
   expect(bitmap.width).toBe(2);
   expect(bitmap.height).toBe(1);
@@ -53,11 +54,11 @@ test("reads multiple task", async () => {
     ],
   );
 
-  const [
-    bitmap1,
-    bitmap2,
-    bitmap3,
-  ] = await readBitmapList();
+  const iterator = readBitmapList();
+
+  const { value: bitmap1 } = await iterator.next();
+  const { value: bitmap2 } = await iterator.next();
+  const { value: bitmap3 } = await iterator.next();
 
   expect(bitmap1.width).toBe(2);
   expect(bitmap1.height).toBe(1);

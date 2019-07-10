@@ -11,7 +11,7 @@ const WORKER_OPTIONS = {
   maxRetries: 0,
 };
 
-export function initBitmapListProcessing(bitmapList: Bitmap[]) {
+export async function run(readBitmapListGenerator = readBitmapList) {
 
   const workers = workerFarm(
     WORKER_OPTIONS,
@@ -19,10 +19,10 @@ export function initBitmapListProcessing(bitmapList: Bitmap[]) {
     ["processBitmap"],
   );
 
-  const processBitmap =
-    promisify(<any>workers.processBitmap);
+  const workerPromises = [];
+  const processBitmap = promisify(<any>workers.processBitmap);
 
-  const workerPromises = bitmapList.map((bitmap, index) => {
+  const processBitmapFailSafe = (bitmap: Bitmap) => {
 
     return processBitmap(bitmap)
       .catch((error: Error) => {
@@ -32,52 +32,48 @@ export function initBitmapListProcessing(bitmapList: Bitmap[]) {
 
       });
 
-  });
+  };
+
+  try {
+
+    for await (const bitmap of readBitmapListGenerator()) {
+      workerPromises.push(processBitmapFailSafe(bitmap));
+    }
+
+  } catch (error) {
+
+    console.error("Not able to process input:", error.message);
+    process.exit();
+
+  }
 
   workerFarm.end(workers);
+  const resultList: ProcessBitmapWorkerResult[] = await Promise.all(workerPromises);
 
-  return Promise.all(workerPromises)
-    .then((resultList: ProcessBitmapWorkerResult[]) => {
+  resultList.forEach((result) => {
 
-      resultList.forEach((result) => {
+    if (!result) {
+      return;
+    }
 
-        if (!result) {
-          return;
-        }
+    process.stdout.write(result.field);
 
-        process.stdout.write(result.field);
+    if (process.env.NODE_ENV !== "production") {
+      process.stdout.write(result.stats);
+    }
 
-        if (process.env.NODE_ENV !== "production") {
-          process.stdout.write(result.stats);
-        }
-
-      });
-
-    });
+  });
 
 }
 
-export function run() {
+if (require.main === module) {
 
-  return readBitmapList()
-    .then(
-      initBitmapListProcessing,
-      (error) => {
-
-        console.error("Not able to process input:", error.message);
-        process.exit();
-
-      },
-    )
-    .catch((error) => {
+  run()
+    .catch((error: Error) => {
 
       console.error("Error while processing test cases:", error.message);
       process.exit();
 
     });
 
-}
-
-if (require.main === module) {
-  run();
 }
