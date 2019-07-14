@@ -48,7 +48,7 @@ export async function run(readBitmapListGenerator = readBitmapList) {
   }
 
   workerFarm.end(workers);
-  const resultList: ProcessBitmapWorkerResult[] = await Promise.all(workerPromises);
+  const resultList: ProcessBitmapWorkerResult[] | null = await Promise.all(workerPromises);
 
   resultList.forEach((result) => {
 
@@ -72,6 +72,10 @@ if (require.main === module) {
 
   run()
     .then(() => {
+
+      if (process.env.NODE_ENV === "production") {
+        return;
+      }
 
       const [duration] = process.hrtime(startTime);
       console.log("Total duration, sec", duration);
