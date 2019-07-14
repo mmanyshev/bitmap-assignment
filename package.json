@@ -10,8 +10,9 @@
     "test": "jest",
     "lint": "tslint -c ./tslint.json --fix './src/**/*.ts'",
     "clean": "rimraf ./dist && rimraf ./temp/results",
-    "stress": "tsc && cross-env NODE_ENV=development node -r module-alias/register ./dist/scripts/stress.js > ./temp/results"
-
+    "stress": "tsc && cross-env NODE_ENV=development node -r module-alias/register ./dist/scripts/stress.js > ./temp/results",
+    "stress:file": "npm run start:debug < ./temp/stressFile > ./temp/results",
+    "generate-stress-file": "tsc && cross-env NODE_ENV=development node -r module-alias/register ./dist/scripts/generateStressFile.js > ./temp/stressFile"
   },
   "repository": {
     "type": "git",

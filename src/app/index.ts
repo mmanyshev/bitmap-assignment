@@ -1,13 +1,13 @@
 
 import { promisify } from "util";
 
-import workerFarm from "worker-farm";
+import workerFarm, { FarmOptions } from "worker-farm";
 
 import { Bitmap } from "app/bitmap";
 import { readBitmapList } from "app/readBitmapList";
 import { ProcessBitmapWorkerResult } from "./worker";
 
-const WORKER_OPTIONS = {
+const WORKER_OPTIONS: FarmOptions = {
   maxRetries: 0,
 };
 
@@ -68,7 +68,15 @@ export async function run(readBitmapListGenerator = readBitmapList) {
 
 if (require.main === module) {
 
+  const startTime = process.hrtime();
+
   run()
+    .then(() => {
+
+      const [duration] = process.hrtime(startTime);
+      console.log("Total duration, sec", duration);
+
+    })
     .catch((error: Error) => {
 
       console.error("Error while processing test cases:", error.message);

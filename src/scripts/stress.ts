@@ -4,6 +4,7 @@ import { Bitmap } from "app/bitmap";
 
 const COLS_COUNT = 182;
 const ROWS_COUNT = 182;
+export const TEST_CASE_AMOUNT = 1000;
 
 function bitmapRow() {
 
@@ -26,19 +27,23 @@ function createBitmap(): Bitmap {
   };
 }
 
-async function* bitmapGenerator() {
+const tick = () =>
+  new Promise((resolve) => setImmediate(resolve));
 
-  for (let i = 0; i < 100; i += 1) {
+export async function* bitmapGenerator() {
+
+  for (let i = 0; i < TEST_CASE_AMOUNT; i += 1) {
+
     yield createBitmap();
+
+    if (i % 5 === 0) {
+      await tick();
+    }
+
   }
 
 }
 
-const startTime = process.hrtime();
-
-run(bitmapGenerator)
-  .then(() => {
-
-    console.log("Total seconds: ", process.hrtime(startTime)[0]);
-
-  });
+if (require.main === module) {
+  run(bitmapGenerator);
+}
