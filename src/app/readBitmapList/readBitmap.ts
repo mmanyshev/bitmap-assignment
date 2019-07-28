@@ -1,6 +1,4 @@
 
-import readline from "readline";
-
 import { Bitmap } from "app/bitmap";
 import { validateRange } from "app/utils/validateRange";
 
@@ -8,7 +6,7 @@ import { readNumberLine } from "./readNumberLine";
 
 const MAX_BITMAP_SIDE_LENGTH = 182;
 
-export async function readBitmap(rl: readline.Interface): Promise<Bitmap> {
+export async function readBitmap(rl: AsyncIterableIterator<string>): Promise<Bitmap> {
 
   const data: number[][] = [];
   let isDataHasWhiteDots = false;

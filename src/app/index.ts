@@ -1,17 +1,17 @@
 
 import { promisify } from "util";
 
-import workerFarm from "worker-farm";
+import workerFarm, { FarmOptions } from "worker-farm";
 
 import { Bitmap } from "app/bitmap";
 import { readBitmapList } from "app/readBitmapList";
 import { ProcessBitmapWorkerResult } from "./worker";
 
-const WORKER_OPTIONS = {
+const WORKER_OPTIONS: FarmOptions = {
   maxRetries: 0,
 };
 
-export function initBitmapListProcessing(bitmapList: Bitmap[]) {
+export async function run(readBitmapListGenerator = readBitmapList) {
 
   const workers = workerFarm(
     WORKER_OPTIONS,
@@ -19,10 +19,10 @@ export function initBitmapListProcessing(bitmapList: Bitmap[]) {
     ["processBitmap"],
   );
 
-  const processBitmap =
-    promisify(<any>workers.processBitmap);
+  const workerPromises = [];
+  const processBitmap = promisify(<any>workers.processBitmap);
 
-  const workerPromises = bitmapList.map((bitmap, index) => {
+  const processBitmapFailSafe = (bitmap: Bitmap) => {
 
     return processBitmap(bitmap)
       .catch((error: Error) => {
@@ -32,52 +32,60 @@ export function initBitmapListProcessing(bitmapList: Bitmap[]) {
 
       });
 
-  });
+  };
+
+  try {
+
+    for await (const bitmap of readBitmapListGenerator()) {
+      workerPromises.push(processBitmapFailSafe(bitmap));
+    }
+
+  } catch (error) {
+
+    console.error("Not able to process input:", error.message);
+    process.exit();
+
+  }
 
   workerFarm.end(workers);
+  const resultList: ProcessBitmapWorkerResult[] | null = await Promise.all(workerPromises);
 
-  return Promise.all(workerPromises)
-    .then((resultList: ProcessBitmapWorkerResult[]) => {
+  resultList.forEach((result) => {
 
-      resultList.forEach((result) => {
+    if (!result) {
+      return;
+    }
 
-        if (!result) {
-          return;
-        }
+    process.stdout.write(result.field);
 
-        process.stdout.write(result.field);
+    if (process.env.NODE_ENV !== "production") {
+      process.stdout.write(result.stats);
+    }
 
-        if (process.env.NODE_ENV !== "production") {
-          process.stdout.write(result.stats);
-        }
-
-      });
-
-    });
+  });
 
 }
 
-export function run() {
+if (require.main === module) {
 
-  return readBitmapList()
-    .then(
-      initBitmapListProcessing,
-      (error) => {
+  const startTime = process.hrtime();
 
-        console.error("Not able to process input:", error.message);
-        process.exit();
+  run()
+    .then(() => {
 
-      },
-    )
-    .catch((error) => {
+      if (process.env.NODE_ENV === "production") {
+        return;
+      }
+
+      const [duration] = process.hrtime(startTime);
+      console.log("Total duration, sec", duration);
+
+    })
+    .catch((error: Error) => {
 
       console.error("Error while processing test cases:", error.message);
       process.exit();
 
     });
 
-}
-
-if (require.main === module) {
-  run();
 }

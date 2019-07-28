@@ -1,10 +1,7 @@
 
-import { once } from "events";
-import readline from "readline";
+export async function readNumberLine(rl: AsyncIterator<string>): Promise<number[]> {
 
-export async function readNumberLine(rl: readline.Interface): Promise<number[]> {
-
-  const line = await once(rl, "line");
+  const { value: line } = await rl.next();
   const preparedLine = line.toString().replace(/\s+/g, " ").trim();
 
   if (!preparedLine.length) {

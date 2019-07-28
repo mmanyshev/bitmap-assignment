@@ -23,10 +23,11 @@ test("it return empty array when empty/spaces input", async () => {
     output: process.stdout,
 
   });
+  const rlIterator = rl[Symbol.asyncIterator]();
 
   writeToStdIn(stdin, ["    "]);
 
-  const line = await readNumberLine(rl);
+  const line = await readNumberLine(rlIterator);
   expect(line).toStrictEqual([]);
 
 });
@@ -39,10 +40,11 @@ test("it can read single number", async () => {
     output: process.stdout,
 
   });
+  const rlIterator = rl[Symbol.asyncIterator]();
 
   writeToStdIn(stdin, ["4"]);
 
-  const line = await readNumberLine(rl);
+  const line = await readNumberLine(rlIterator);
   expect(line).toStrictEqual([4]);
 
 });
@@ -55,10 +57,11 @@ test("it can read multiple numbers", async () => {
     output: process.stdout,
 
   });
+  const rlIterator = rl[Symbol.asyncIterator]();
 
   writeToStdIn(stdin, ["4 5 6 8 7 2"]);
 
-  const line = await readNumberLine(rl);
+  const line = await readNumberLine(rlIterator);
   expect(line).toStrictEqual([4, 5, 6, 8, 7, 2]);
 
 });
@@ -71,10 +74,11 @@ test("it should skip additional spaces", async () => {
     output: process.stdout,
 
   });
+  const rlIterator = rl[Symbol.asyncIterator]();
 
   writeToStdIn(stdin, ["     4   5      "]);
 
-  const line = await readNumberLine(rl);
+  const line = await readNumberLine(rlIterator);
   expect(line).toStrictEqual([4, 5]);
 
 });
@@ -87,9 +91,11 @@ test("it should throw on non number values", async () => {
     output: process.stdout,
 
   });
+  const rlIterator = rl[Symbol.asyncIterator]();
 
   writeToStdIn(stdin, ["     4  fdfd  5      "]);
 
-  await expect(readNumberLine(rl)).rejects.toThrow("Failed to parse numeric value");
+  await expect(readNumberLine(rlIterator))
+    .rejects.toThrow("Failed to parse numeric value");
 
 });

@@ -1,15 +1,16 @@
 
+import { run } from "app";
 import { Bitmap } from "app/bitmap";
-import { initBitmapListProcessing } from "app";
 
 const COLS_COUNT = 182;
 const ROWS_COUNT = 182;
+export const TEST_CASE_AMOUNT = 1000;
 
 function bitmapRow() {
 
   return Array.from(
     Array(COLS_COUNT),
-    () => Math.round(Math.random()),
+    () => Math.round(Math.random() / 1.42),
   );
 
 }
@@ -26,12 +27,23 @@ function createBitmap(): Bitmap {
   };
 }
 
-const bitmapList = Array.from(Array(1000), createBitmap);
+const tick = () =>
+  new Promise((resolve) => setImmediate(resolve));
 
-const startTime = process.hrtime();
-initBitmapListProcessing(bitmapList)
-  .then(() => {
+export async function* bitmapGenerator() {
 
-    console.log("Total seconds: ", process.hrtime(startTime)[0]);
+  for (let i = 0; i < TEST_CASE_AMOUNT; i += 1) {
 
-  });
+    yield createBitmap();
+
+    if (i % 5 === 0) {
+      await tick();
+    }
+
+  }
+
+}
+
+if (require.main === module) {
+  run(bitmapGenerator);
+}
